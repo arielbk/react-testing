@@ -6,10 +6,10 @@ afterEach(cleanup);
 
 test('<Counter />', () => {
   // render component
-  // const wrapper = render(<Counter />); => destructure
-  const { debug, getByTestId } = render(<Counter />);
+  // const wrapper = render(<Counter />); --> destructure
+  const { getByTestId } = render(<Counter />);
 
-  debug(); // outputs dom as string
+  // debug(); // outputs dom as string
   const counterButton = getByTestId('counter-button');
 
   // asserts counter button is a button
