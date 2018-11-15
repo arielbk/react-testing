@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, cleanup } from 'react-testing-library';
+import { render, cleanup, waitForElement } from 'react-testing-library';
 
 import MovieDetail from './MovieDetail';
 
@@ -19,14 +19,18 @@ const match = {
 
 console.error = jest.fn();
 
-test('<MovieDetail />', () => {
-  fetch.mockResponseOnce(JSON.stringify({
-    movie: {
-      id: 'hi',
-      movie: 'this is a movie',
-    },
-  }));
+// so that the test can be more resilient, if this is changed movie.title below will also change...
+const movie = {
+  id: 'hi',
+  title: 'this is a movie',
+};
 
-  const { debug } = render(<MovieDetail match={match} />);
+test('<MovieDetail />', async () => {
+  fetch.mockResponseOnce(JSON.stringify(movie));
+
+  const { debug, getByTestId } = render(<MovieDetail match={match} />);
+  await waitForElement(() => getByTestId('movie-title'));
+
+  expect(getByTestId('movie-title').textContent).toBe(movie.title);
   debug();
 });
